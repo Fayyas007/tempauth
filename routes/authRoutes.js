@@ -13,6 +13,8 @@ router.get('/voter',authController.voter_get);
 router.get('/submitcandidate',authController.submit_candidate_get);
 router.post('/po-signup', authController.po_signup_post);
 router.post('/po-login', authController.po_login_post);
+router.get('/election',authController.election_type_get);
+router.post('/election',authController.type_candidate_get);
 
 
 module.exports = router;
