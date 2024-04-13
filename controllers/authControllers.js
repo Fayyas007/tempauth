@@ -103,10 +103,12 @@ module.exports.candidate_get = async (req, res) => {
 };
 
 module.exports.candidate_delete_post = async (req, res) => {
-    const { candidateID } = req.body;
+
+    console.log(req.body);
+    const { _id } = req.body;
 
     try {
-        const deletedCandidate = await Candidate.findOneAndDelete({ candidateID });
+        const deletedCandidate = await Candidate.findOneAndDelete({ _id});
 
         if (!deletedCandidate) {
             return res.status(404).json({ error: 'Candidate not found' });
@@ -274,6 +276,47 @@ module.exports.type_candidate_get = async (req, res) => {
 
         // Return the found candidates
         res.status(200).json({ candidates });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+
+module.exports.dashboard_get = async (req, res) => {
+    try {
+        // Retrieve total number of registered users
+        const totalUsers = await User.countDocuments();
+
+        // Retrieve unique election types
+        const uniqueElectionTypes = await Candidate.distinct('electionType');
+
+        // Count the number of unique election types
+        const numElectionTypes = uniqueElectionTypes.length;
+
+        // Return the data
+        res.status(200).json({ totalUsers, numElectionTypes });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+
+module.exports.all_candidate_get = async (req, res) => {
+    try {
+        const uniqueElectionTypes = await Candidate.distinct('electionType');
+
+        const candidatesByType = {};
+
+        for (const type of uniqueElectionTypes) {
+            const candidates = await Candidate.find({ electionType: type });
+
+            const candidateNames = candidates.map(candidate => `${candidate.firstName} ${candidate.middleName ? candidate.middleName + ' ' : ''}${candidate.lastName}`);
+
+            candidatesByType[type] = candidateNames;
+        }
+
+        // Return the result as JSON
+        res.status(200).json(candidatesByType);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Server error' });
