@@ -17,6 +17,7 @@ router.get('/election',authController.election_type_get);
 router.post('/election',authController.type_candidate_get);
 router.get('/dashboard',authController.dashboard_get);
 router.get('/all-candidate',authController.all_candidate_get);
+router.get('/delete-all-voter',authController.delete_all_voter_get);
 
 
 module.exports = router;

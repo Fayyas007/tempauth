@@ -24,14 +24,13 @@ const userSchema = new mongoose.Schema({
     },
     department: {
         type: String,
-        required: true,
-        enum: ['CSE', 'EE', 'EC', 'ME', 'CE'] // Add your department options
+        required: true
     },
     year: {
         type: Number,
         required: true,
         min: 2020,
-        max: 2023 // Adjust as needed
+        max: 2024 // Adjust as needed
     }
 });
 

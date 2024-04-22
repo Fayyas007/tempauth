@@ -323,6 +323,22 @@ module.exports.all_candidate_get = async (req, res) => {
     }
 };
 
+module.exports.delete_all_voter_get = async (req, res) => {
+    try {
+        // Perform action to delete all candidates
+        // For example:
+        const result = await User.deleteMany({});
+        console.log(`${result.deletedCount} documents deleted successfully.`);
+
+        // Return a success message
+        res.status(200).json({ message: 'All candidates deleted successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+
+
 // delete all collection
 
 // async function deleteAllData() {
